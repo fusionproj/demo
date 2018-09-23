@@ -60,8 +60,8 @@ class Categories extends Admin_Controller {
         $config['upload_path']      = 'uploads/images/full';
         $config['allowed_types']    = '*';//'gif|jpg|png';
         $config['max_size']         = $this->config->item('size_limit')?$this->config->item('size_limit'):'500000';
-        $config['max_width']        = '1200';
-        $config['max_height']       = '1100';
+        $config['max_width']        = '2500';
+        $config['max_height']       = '1900';
         $config['encrypt_name']     = true;
         $this->load->library('upload', $config);
         //var_dump($config);die;
