@@ -230,7 +230,7 @@ if ( ! function_exists('get_config'))
 
 		// Fetch the config file
 		if ( ! file_exists($file_path))
-		{	echo $file_path;
+		{
 			exit('The configuration file does not exist.');
 		}
 
