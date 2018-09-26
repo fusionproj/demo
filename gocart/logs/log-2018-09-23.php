@@ -4078,3 +4078,50 @@ DEBUG - 2018-09-23 18:33:20 --> File loaded: gocart/views/admin/categories.php
 DEBUG - 2018-09-23 18:33:20 --> File loaded: gocart/views/admin/footer.php
 DEBUG - 2018-09-23 18:33:20 --> Final output sent to browser
 DEBUG - 2018-09-23 18:33:20 --> Total execution time: 0.1829
+DEBUG - 2018-09-23 18:51:21 --> Config Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Hooks Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Utf8 Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> UTF-8 Support Enabled
+DEBUG - 2018-09-23 18:51:21 --> URI Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Router Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Database Driver Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Database Driver Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Output Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Security Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Input Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Global POST and COOKIE data sanitized
+DEBUG - 2018-09-23 18:51:21 --> Language Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Loader Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Controller Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Database Driver Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Migrations class initialized
+DEBUG - 2018-09-23 18:51:21 --> Language file loaded: language/english/migration_lang.php
+DEBUG - 2018-09-23 18:51:21 --> Database Forge Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Model Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Model Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Current migration: 3
+DEBUG - 2018-09-23 18:51:21 --> Session Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Helper loaded: url_helper
+DEBUG - 2018-09-23 18:51:21 --> Model Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Model Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Model Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Language file loaded: language/english/digital_product_lang.php
+ERROR - 2018-09-23 18:51:21 --> Severity: Notice  --> Undefined index: enabled C:\custom-softwares\wamp64\www\my-app\gocart\libraries\Go_cart.php 59
+DEBUG - 2018-09-23 18:51:21 --> Model Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Model Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Model Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Helper loaded: file_helper
+DEBUG - 2018-09-23 18:51:21 --> Helper loaded: string_helper
+DEBUG - 2018-09-23 18:51:21 --> Helper loaded: html_helper
+DEBUG - 2018-09-23 18:51:21 --> Helper loaded: language_helper
+DEBUG - 2018-09-23 18:51:21 --> Language file loaded: language/english/admin_common_lang.php
+DEBUG - 2018-09-23 18:51:21 --> Language file loaded: language/english/media_lang.php
+DEBUG - 2018-09-23 18:51:21 --> Language file loaded: language/english/category_lang.php
+DEBUG - 2018-09-23 18:51:21 --> Upload Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> Helper loaded: form_helper
+DEBUG - 2018-09-23 18:51:21 --> Form Validation Class Initialized
+DEBUG - 2018-09-23 18:51:21 --> File loaded: gocart/views/admin/header.php
+DEBUG - 2018-09-23 18:51:21 --> File loaded: gocart/views/admin/category_form.php
+DEBUG - 2018-09-23 18:51:21 --> File loaded: gocart/views/admin/footer.php
+DEBUG - 2018-09-23 18:51:21 --> Final output sent to browser
+DEBUG - 2018-09-23 18:51:21 --> Total execution time: 0.1545
