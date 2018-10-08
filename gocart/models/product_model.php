@@ -11,7 +11,7 @@ Class Product_model extends CI_Model
 	{
 		if(empty($data))
 		{
-			//if nothing is provided return the whole shabang
+			//if nothing is provided return the whole shabangaa
 			$this->get_all_products();
 		}
 		else
@@ -377,9 +377,9 @@ Class Product_model extends CI_Model
 	{	
 		return	$this->db->insert('products_variants_brand', array('product_id'=>$product_id, 'product_variant_id'=>$variant_id, 'brand_id'=>$brand_id_info));
 	}
-	function add_vendor_product_item($product_id, $vendor_id, $product_item_id,$item_price){
+	function add_vendor_product_item($product_id, $vendor_id, $product_item_id,$item_price,$image_name){
 		try{
-			$this->db->insert('vendors_product', array('product_id'=>$product_id, 'vendor_id'=>$vendor_id, 'product_variant_brand_id'=>$product_item_id,'price'=>$item_price));
+			$this->db->insert('vendors_product', array('product_id'=>$product_id, 'vendor_id'=>$vendor_id, 'product_variant_brand_id'=>$product_item_id,'price'=>$item_price,'image'=>$image_name));
 			return true;	
 		}catch(Exception $e){
 			return "Problem in inserting data";

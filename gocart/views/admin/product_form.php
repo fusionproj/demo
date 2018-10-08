@@ -78,10 +78,10 @@ function remove_option(id)
 				<?php if($id){?>
 				<li><a href="#product_dimensions" data-toggle="tab"><?php echo "Dimensions(variants)";?></a></li>
 				<?php } 
-				if($product_variants){?>
+				if(isset($product_variants) && $product_variants){?>
 				<li><a href="#product_brands" data-toggle="tab"><?php echo "Brands";?></a></li>
 				<?php } 
-				if($all_vendors){?>
+				if($id && isset($all_vendors) && $all_vendors){?>
 				<li><a href="#all_vendors" data-toggle="tab"><?php echo "All Vendors";?></a></li>
 				<?php } ?>
 				<li><a href="#product_options" data-toggle="tab"><?php echo lang('options');?></a></li>
@@ -147,6 +147,7 @@ function remove_option(id)
 								<div class="span2">
 									<label for="quantity"><?php echo lang('quantity');?> </label>
 									<?php
+									$quantity = $quantity?$quantity:20;
 									$data	= array('name'=>'quantity', 'value'=>set_value('quantity', $quantity), 'class'=>'span2');
 									echo form_input($data);
 									?>
@@ -302,15 +303,19 @@ function remove_option(id)
 					<div class="span8">
 						<?php
 						$options= array();
-						foreach ($all_product_items as $info) {
-								$options[$info->id]=$info->product_name."-".$info->brand_name."-".$info->dimension_value.'-'.$info->dimension_name;
+						if(isset($all_product_items) && count($all_product_items)){
+							foreach ($all_product_items as $info) {
+									$options[$info->id]=$info->product_name."-".$info->brand_name."-".$info->dimension_value.'-'.$info->dimension_name;
+							}
 						}
 						foreach($all_vendors as $info){
 							echo '<p id=vendor_'.$info->id.'>Vendor Name <b>'.$info->firstname.'</b>';
 							echo '<label for="product_item">Product Items</label>';
 							echo form_dropdown('product_item_arr_'.$info->id, $options, '', 'class="span4"  id=product_item_arr_'.$info->id);
 							echo '<input type="text"  name=price_'.$info->id.' id=item_price_'.$info->id.'>';
-							echo "<a onclick=vendor_product_item(".$id.','.$info->id.");return false;>Save</a></p>";
+							echo '<input type="file" id=filename-'.$info->id.' name=filename-'.$info->id.'>';
+
+							echo "<a onclick=vendor_product_item(".$id.','.$info->id.");return false;>Save</a></p><br/><br/><br/>";
 						}
 						?>
 					</div>
@@ -578,24 +583,28 @@ function remove_option(id)
 		echo form_dropdown('taxable', $options, set_value('taxable',$taxable), 'class="span4"');
 		?>
 		
-		<label for="sku"><?php echo lang('sku');?></label>
+		<label class="hide" for="sku"><?php echo lang('sku');?></label>
 		<?php
-		$data	= array('name'=>'sku', 'value'=>set_value('sku', $sku), 'class'=>'span4');
+		$sku = $sku?$sku:"temp";
+		$data	= array('name'=>'sku', 'value'=>set_value('sku', $sku), 'class'=>'span4 hide');
 		echo form_input($data);?>
 		
-		<label for="weight"><?php echo lang('weight');?> </label>
+		<label class="hide" for="weight"><?php echo lang('weight');?> </label>
 		<?php
-		$data	= array('name'=>'weight', 'value'=>set_value('weight', $weight), 'class'=>'span4');
+		$weight = $weight?$weight:"2000";
+		$data	= array('name'=>'weight', 'value'=>set_value('weight', $weight), 'class'=>'span4 hide');
 		echo form_input($data);?>
 		
-		<label for="price"><?php echo lang('price');?></label>
+		<label class="hide" for="price"><?php echo lang('price');?></label>
 		<?php
-		$data	= array('name'=>'price', 'value'=>set_value('price', $price), 'class'=>'span4');
+		$price = $price?$price:2000;
+		$data	= array('name'=>'price', 'value'=>set_value('price', $price), 'class'=>'span4 hide');
 		echo form_input($data);?>
 		
-		<label for="saleprice"><?php echo lang('saleprice');?></label>
+		<label class="hide" for="saleprice"><?php echo lang('saleprice');?></label>
 		<?php
-		$data	= array('name'=>'saleprice', 'value'=>set_value('saleprice', $saleprice), 'class'=>'span4');
+		$saleprice = $saleprice?$saleprice:2000;
+		$data	= array('name'=>'saleprice', 'value'=>set_value('saleprice', $saleprice), 'class'=>'span4 hide');
 		echo form_input($data);?>
 
 		
@@ -832,22 +841,46 @@ function map_brand_to_variant(product_id, variant_id)
 //]]>
 
 function vendor_product_item(product_id,vendor_id){
-	
-
-		var product_item_arr = $('#product_item_arr_'+vendor_id).val();
-		var item_price = $('#item_price_'+vendor_id).val();
-	if(!product_id || !vendor_id || !product_item_arr ||!item_price){
+	var fileData= $('#filename-'+vendor_id)[0].files[0];
+	var product_item_arr = $('#product_item_arr_'+vendor_id).val();
+	var item_price = $('#item_price_'+vendor_id).val();
+	var image_name = fileData.name;
+	var data = new FormData();
+	data.append('image',fileData);
+		
+	if(!product_id || !vendor_id || !product_item_arr ||!item_price||!image_name){
 		alert("all the values are mandatory");
 		return false;
 	}
-	$.post("<?php echo site_url($this->config->item('admin_folder').'/products/add_vendor_product_item/');?>", { vendor_id: vendor_id,
-		product_id:product_id,
-		product_item_arr:product_item_arr,
-		item_price:item_price
-		},
-										function(data) {
-	
-										})
+	// $.post("<?php echo site_url($this->config->item('admin_folder').'/products/add_vendor_product_item/');?>", { vendor_id: vendor_id,
+	// 	product_id:product_id,
+	// 	product_item_arr:product_item_arr,
+	// 	item_price:item_price,
+	// 	},function(data) {})
+	data.append('vendor_id',vendor_id);
+	data.append('product_id',product_id);
+	data.append('product_item_arr',product_item_arr);
+	data.append('item_price',item_price);
+
+
+	$.ajax({
+				url: "<?php echo site_url($this->config->item('admin_folder').'/products/add_vendor_product_item/');?>", // Url to which the request is send
+				type: "POST",             // Type of request to be send, called as method
+				data: data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+				dataType: 'script',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(data)   // A function to be called if request succeeds
+				{
+					alert("Data saved successfully, please insert another record");
+					$('#filename-'+vendor_id).val('');
+					$('#product_item_arr_'+vendor_id).val('');
+					$('#item_price_'+vendor_id).val('');
+				}
+			});
+
+
 }
 </script>
 <?php

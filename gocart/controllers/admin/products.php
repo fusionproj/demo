@@ -147,11 +147,83 @@ class Products extends Admin_Controller {
 		}
 	}
 	function add_vendor_product_item(){
+		
+		$data['file_name'] = false;
+		$data['error']	= false;
+		
+		$config['allowed_types'] = 'gif|jpg|png';
+		//$config['max_size']	= $this->config->item('size_limit');
+		$config['upload_path'] = 'uploads/images/full';
+		$config['encrypt_name'] = true;
+		$config['remove_spaces'] = true;
+
+		$this->load->library('upload', $config);
+		if ( $this->upload->do_upload('image'))
+		{
+			$upload_data	= $this->upload->data();
+			
+			$this->load->library('image_lib');
+			/*
+			
+			I find that ImageMagick is more efficient that GD2 but not everyone has it
+			if your server has ImageMagick then you can change out the line
+			
+			$config['image_library'] = 'gd2';
+			
+			with
+			
+			$config['library_path']		= '/usr/bin/convert'; //make sure you use the correct path to ImageMagic
+			$config['image_library']	= 'ImageMagick';
+			*/			
+			
+			//this is the larger image
+			$config['image_library'] = 'gd2';
+			$config['source_image'] = 'uploads/images/full/'.$upload_data['file_name'];
+			$config['new_image']	= 'uploads/images/medium/'.$upload_data['file_name'];
+			$config['maintain_ratio'] = TRUE;
+			$config['width'] = 600;
+			$config['height'] = 500;
+			$this->image_lib->initialize($config);
+			$this->image_lib->resize();
+			$this->image_lib->clear();
+
+			//small image
+			$config['image_library'] = 'gd2';
+			$config['source_image'] = 'uploads/images/medium/'.$upload_data['file_name'];
+			$config['new_image']	= 'uploads/images/small/'.$upload_data['file_name'];
+			$config['maintain_ratio'] = TRUE;
+			$config['width'] = 235;
+			$config['height'] = 235;
+			$this->image_lib->initialize($config); 
+			$this->image_lib->resize();
+			$this->image_lib->clear();
+
+			//cropped thumbnail
+			$config['image_library'] = 'gd2';
+			$config['source_image'] = 'uploads/images/small/'.$upload_data['file_name'];
+			$config['new_image']	= 'uploads/images/thumbnails/'.$upload_data['file_name'];
+			$config['maintain_ratio'] = TRUE;
+			$config['width'] = 150;
+			$config['height'] = 150;
+			$this->image_lib->initialize($config); 	
+			$this->image_lib->resize();	
+			$this->image_lib->clear();
+
+			$data['file_name']	= $upload_data['file_name'];
+		}
+		
+		if($this->upload->display_errors() != '')
+		{
+			$data['error'] = $this->upload->display_errors();
+		}
+
+
 		$product_item_arr	= $this->input->post('product_item_arr');
 		$vendor_id	= $this->input->post('vendor_id');
 		$product_id = $this->input->post('product_id');
 		$item_price = $this->input->post('item_price');
-		if(empty($product_id)||empty($vendor_id)||empty($product_item_arr))
+		$fdata = $this->input->post('fdata');
+		if(empty($product_id)||empty($vendor_id)||empty($product_item_arr)||empty($data['file_name']))
 		{
 			echo json_encode(array());
 		}
@@ -159,13 +231,18 @@ class Products extends Admin_Controller {
 		{
 			
 			$count = 0;
-			$this->Product_model->add_vendor_product_item($product_id, $vendor_id, $product_item_arr,$item_price);
+			$this->Product_model->add_vendor_product_item($product_id, $vendor_id, $product_item_arr,$item_price,$data['file_name']);
 			
 
 			$results	= true;
 			
 			echo json_encode($results);
 		}
+	}
+	function add_vendor_product_item_image(){
+	var_dump($_FILES['image']['name']);die;
+		$vendor_id	= $this->input->post('vendor_id');
+		
 	}
 	function bulk_save()
 	{
@@ -405,8 +482,8 @@ class Products extends Admin_Controller {
 			$post_images				= $this->input->post('images');
 
 			//added by mohit
-			$save['product_dimensions_id'] = $this->input->post('product_dimensions_id');
-			$save['product_dimensions_value'] = $this->input->post('product_dimensions_value');
+			// $save['product_dimensions_id'] = $this->input->post('product_dimensions_id');
+			// $save['product_dimensions_value'] = $this->input->post('product_dimensions_value');
 			$brand_ids_arr = $this->input->post('brand_ids_arr');
 			
 
