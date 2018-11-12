@@ -45,7 +45,7 @@ if(isset($additional_header_info))
 					<span class="icon-bar"></span>
 				</a>
 			
-				<a class="brand" href="<?php echo site_url();?>"><?php echo $this->config->item('company_name');?></a>
+				<a class="brand" href="<?php echo site_url();?>products/"><?php echo $this->config->item('company_name');?></a>
 				
 				<div class="nav-collapse">
 					<ul class="nav">
