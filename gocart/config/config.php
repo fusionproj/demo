@@ -27,7 +27,8 @@ $config['base_url']			= '';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -198,7 +199,8 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 4;
+
+$config['log_threshold'] = 0;
 
 /*
 |--------------------------------------------------------------------------
@@ -242,7 +244,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'b5ebc2b42bd5eaadf0b7cf40674c6c19';
+$config['encryption_key'] = '51fdc41c5e095f34741b3b438073b7c7';
 
 /*
 |--------------------------------------------------------------------------
