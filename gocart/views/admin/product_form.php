@@ -75,15 +75,6 @@ function remove_option(id)
 				<li><a href="#product_downloads" data-toggle="tab"><?php echo lang('digital_content');?></a></li>
 				<?php endif;?>
 				<li><a href="#product_categories" data-toggle="tab"><?php echo lang('categories');?></a></li>
-				<?php if($id){?>
-				<li><a href="#product_dimensions" data-toggle="tab"><?php echo "Dimensions(variants)";?></a></li>
-				<?php } 
-				if(isset($product_variants) && $product_variants){?>
-				<li><a href="#product_brands" data-toggle="tab"><?php echo "Brands";?></a></li>
-				<?php } 
-				if($id && isset($all_vendors) && $all_vendors){?>
-				<li><a href="#all_vendors" data-toggle="tab"><?php echo "All Vendors";?></a></li>
-				<?php } ?>
 				<li><a href="#product_options" data-toggle="tab"><?php echo lang('options');?></a></li>
 				<li><a href="#product_related" data-toggle="tab"><?php echo lang('related_products');?></a></li>
 				<li><a href="#product_photos" data-toggle="tab"><?php echo lang('images');?></a></li>
@@ -147,7 +138,6 @@ function remove_option(id)
 								<div class="span2">
 									<label for="quantity"><?php echo lang('quantity');?> </label>
 									<?php
-									$quantity = $quantity?$quantity:20;
 									$data	= array('name'=>'quantity', 'value'=>set_value('quantity', $quantity), 'class'=>'span2');
 									echo form_input($data);
 									?>
@@ -258,70 +248,6 @@ function remove_option(id)
 				</div>
 			</div>
 			
-			<div class="tab-pane" id="product_dimensions">
-				<div class="row">
-					<div class="span8">
-						<?php
-							foreach($product_variants as $info){
-							echo '<p> Type <b>'.$info->name.'</b>      Value <b>'.$info->dimension_value.'</b>';
-						}
-						?>
-						<label for="dimension">Dimension</label>
-							<?php
-							$options= array();
-							foreach ($all_product_dimensions as $info) {
-									$options[$info->id]=$info->name;
-							}
-							echo form_dropdown('product_dimensions_id', $options, '', 'id="product_dimensions_id" class="span4"');
-							?>
-							<input type="text" id="product_dimensions_value" name="product_dimensions_value" value="">
-							<a href="javascript:void(0)" onclick="add_variant();return false;" id="" class="btn">Add Variant</a>
-					</div>
-				</div>
-			</div>
-
-			<div class="tab-pane" id="product_brands">
-				<div class="row">
-					<div class="span8">
-						<?php
-						$options= array();
-						foreach ($all_brands as $info) {
-								$options[$info->id]=$info->brand_name;
-						}
-						foreach($product_variants as $info){
-							echo '<p id=variant_'.$info->variant_id.'>Type <b>'.$info->name.'</b>      Value <b>'.$info->dimension_value.'</b>';
-							echo '<label for="brand_name">Brand Name</label>';
-							echo form_dropdown('brand_ids_arr_'.$info->variant_id.'[]', $options, '', 'class="span4" multiple id=brand_ids_arr_'.$info->variant_id);
-							echo "<a onclick=map_brand_to_variant(".$id.','.$info->variant_id.");return false;>Save</a></p>";
-						}
-						?>
-					</div>
-				</div>
-			</div>
-			<div class="tab-pane" id="all_vendors">
-				<div class="row">
-					<div class="span8">
-						<?php
-						$options= array();
-						if(isset($all_product_items) && count($all_product_items)){
-							foreach ($all_product_items as $info) {
-									$options[$info->id]=$info->product_name."-".$info->brand_name."-".$info->dimension_value.'-'.$info->dimension_name;
-							}
-						}
-						foreach($all_vendors as $info){
-							echo '<p id=vendor_'.$info->id.'>Vendor Name <b>'.$info->firstname.'</b>';
-							echo '<label for="product_item">Product Items</label>';
-							echo form_dropdown('product_item_arr_'.$info->id, $options, '', 'class="span4"  id=product_item_arr_'.$info->id);
-							echo '<input type="text"  name=price_'.$info->id.' id=item_price_'.$info->id.'>';
-							echo '<input type="file" id=filename-'.$info->id.' name=filename-'.$info->id.'>';
-
-							echo "<a onclick=vendor_product_item(".$id.','.$info->id.");return false;>Save</a></p><br/><br/><br/>";
-						}
-						?>
-					</div>
-				</div>
-			</div>			
-
 			<div class="tab-pane" id="product_options">
 				<div class="row">
 					<div class="span8">
@@ -583,32 +509,25 @@ function remove_option(id)
 		echo form_dropdown('taxable', $options, set_value('taxable',$taxable), 'class="span4"');
 		?>
 		
-		<label class="hide" for="sku"><?php echo lang('sku');?></label>
+		<label for="sku"><?php echo lang('sku');?></label>
 		<?php
-		$sku = $sku?$sku:"temp";
-		$data	= array('name'=>'sku', 'value'=>set_value('sku', $sku), 'class'=>'span4 hide');
+		$data	= array('name'=>'sku', 'value'=>set_value('sku', $sku), 'class'=>'span4');
 		echo form_input($data);?>
 		
-		<label class="hide" for="weight"><?php echo lang('weight');?> </label>
+		<label for="weight"><?php echo lang('weight');?> </label>
 		<?php
-		$weight = $weight?$weight:"2000";
-		$data	= array('name'=>'weight', 'value'=>set_value('weight', $weight), 'class'=>'span4 hide');
+		$data	= array('name'=>'weight', 'value'=>set_value('weight', $weight), 'class'=>'span4');
 		echo form_input($data);?>
 		
-		<label class="hide" for="price"><?php echo lang('price');?></label>
+		<label for="price"><?php echo lang('price');?></label>
 		<?php
-		$price = $price?$price:2000;
-		$data	= array('name'=>'price', 'value'=>set_value('price', $price), 'class'=>'span4 hide');
+		$data	= array('name'=>'price', 'value'=>set_value('price', $price), 'class'=>'span4');
 		echo form_input($data);?>
 		
-		<label class="hide" for="saleprice"><?php echo lang('saleprice');?></label>
+		<label for="saleprice"><?php echo lang('saleprice');?></label>
 		<?php
-		$saleprice = $saleprice?$saleprice:2000;
-		$data	= array('name'=>'saleprice', 'value'=>set_value('saleprice', $saleprice), 'class'=>'span4 hide');
+		$data	= array('name'=>'saleprice', 'value'=>set_value('saleprice', $saleprice), 'class'=>'span4');
 		echo form_input($data);?>
-
-		
-
 	</div>
 </div>
 
@@ -799,89 +718,7 @@ function photos_sortable()
 		scroll: true
 	});
 }
-function map_brand_to_variant(product_id, variant_id)
-{
-	var brand_ids_arr = $('#brand_ids_arr_'+variant_id).val();
-	if(!product_id || !variant_id || !brand_ids_arr){
-		alert("all the values are mandatory");
-		return false;
-	}
-	$.post("<?php echo site_url($this->config->item('admin_folder').'/products/map_dimensions_to_variant/');?>", { variant_id: variant_id,
-		product_id:product_id,
-		brand_ids_arr:brand_ids_arr
-		},
-										function(data) {
-											alert(data)
-										})
-
-}	function add_variant(){
-	if(!$('#product_dimensions_id').val()||!$("#product_dimensions_value").val()){
-		alert("fields are mandatory");
-		return false;
-	}
-	$.post("<?php echo site_url($this->config->item('admin_folder').'/products/add_product_variant/');?>", { dimension_id: $('#product_dimensions_id').val(),
-		value:$("#product_dimensions_value").val(),
-		product_id:"<?php echo $id ?>"
-		},
-										function(data) {
-											
-											$('#product_list').html('');
-									
-											$.each(data, function(index, value){
-									
-												if($('#related_product_'+index).length == 0)
-												{
-													$('#product_list').append('<option id="product_item_'+index+'" value="'+index+'">'+value+'</option>');
-													
-												}
-											});
-									
-									}, 'json');
-}
 //]]>
-
-function vendor_product_item(product_id,vendor_id){
-	var fileData= $('#filename-'+vendor_id)[0].files[0];
-	var product_item_arr = $('#product_item_arr_'+vendor_id).val();
-	var item_price = $('#item_price_'+vendor_id).val();
-	var image_name = fileData.name;
-	var data = new FormData();
-	data.append('image',fileData);
-		
-	if(!product_id || !vendor_id || !product_item_arr ||!item_price||!image_name){
-		alert("all the values are mandatory");
-		return false;
-	}
-	// $.post("<?php echo site_url($this->config->item('admin_folder').'/products/add_vendor_product_item/');?>", { vendor_id: vendor_id,
-	// 	product_id:product_id,
-	// 	product_item_arr:product_item_arr,
-	// 	item_price:item_price,
-	// 	},function(data) {})
-	data.append('vendor_id',vendor_id);
-	data.append('product_id',product_id);
-	data.append('product_item_arr',product_item_arr);
-	data.append('item_price',item_price);
-
-
-	$.ajax({
-				url: "<?php echo site_url($this->config->item('admin_folder').'/products/add_vendor_product_item/');?>", // Url to which the request is send
-				type: "POST",             // Type of request to be send, called as method
-				data: data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-				dataType: 'script',
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(data)   // A function to be called if request succeeds
-				{
-					alert("Data saved successfully, please insert another record");
-					$('#filename-'+vendor_id).val('');
-					$('#product_item_arr_'+vendor_id).val('');
-					$('#item_price_'+vendor_id).val('');
-				}
-			});
-
-
-}
 </script>
 <?php
 function related_items($id, $name) {

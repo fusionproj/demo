@@ -11,7 +11,7 @@ Class Product_model extends CI_Model
 	{
 		if(empty($data))
 		{
-			//if nothing is provided return the whole shabangaa
+			//if nothing is provided return the whole shabang
 			$this->get_all_products();
 		}
 		else
@@ -183,19 +183,8 @@ Class Product_model extends CI_Model
 			$result->related_products	= array();
 		}
 		$result->categories			= $this->get_product_categories($result->id);
-		$result->product_variants  = $this->get_product_variants($result->id);
-		$result->product_brands_details     = $this->get_product_brands_data($result->id);
+
 		return $result;
-	}
-	function get_product_variants($id){
-		return $this->db->select('product_variants.*, product_variants.id as variant_id ,product_dimension.* ')->where('product_id', $id)->join('product_dimension', 'product_dimension_id = product_dimension.id')->get('product_variants')->result();
-	}
-	function get_product_brands_data($id){
-		try{
-		return $this->db->where('product_id', $id)->join('brands', 'brand_id = brands.id')->get('products_variants_brand')->result();
-	}catch(Exception $e){
-		var_dump($e);die;
-	}
 	}
 
 	function get_product_categories($id)
@@ -229,7 +218,7 @@ Class Product_model extends CI_Model
 		}
 	}
 
-	function save($product, $options=false, $categories=false,$brand_ids_arr=array())
+	function save($product, $options=false, $categories=false)
 	{
 		if ($product['id'])
 		{
@@ -308,42 +297,7 @@ Class Product_model extends CI_Model
 				}
 			}
 		}
-		if(count($brand_ids_arr)){
-			if($product['id']){
-				$product_brands	= $this->get_product_brands($id);
-				
-				//generate cat_id array
-				$ids	= array();
-				foreach($product_brands as $b)
-				{
-					$ids[]	= $b->brand_id;
-				}
-
-				//eliminate categories that products are no longer in
-				foreach($ids as $b)
-				{
-					if(!in_array($b, $brand_ids_arr))
-					{
-						$this->db->delete('products_variants_brand', array('product_id'=>$id,'brand_id'=>$b));
-					}
-				}
-				
-				//add products to new categories
-				foreach($brand_ids_arr as $b)
-				{
-					if(!in_array($b, $ids))
-					{
-						$this->db->insert('products_variants_brand', array('product_id'=>$id,'brand_id'=>$b));
-					}
-				}
-			}else{
-				//new product add them all
-					foreach($brand_ids_arr as $b)
-					{
-						$this->db->insert('products_variants_brand', array('product_id'=>$id,'brand_id'=>$b));
-					}
-			}
-		}
+		
 		
 		//return the product id
 		return $id;
@@ -367,24 +321,9 @@ Class Product_model extends CI_Model
 
 	function add_product_to_category($product_id, $optionlist_id, $sequence)
 	{
-		return $this->db->insert('product_categories', array('product_id'=>$product_id, 'category_id'=>$category_id, 'sequence'=>$sequence));
+		$this->db->insert('product_categories', array('product_id'=>$product_id, 'category_id'=>$category_id, 'sequence'=>$sequence));
 	}
-	function add_product_variant($product_id, $dimension_id, $value)
-	{		
-		return $this->db->insert('product_variants', array('product_id'=>$product_id, 'product_dimension_id'=>$dimension_id, 'dimension_value'=>$value));
-	}
-	function map_dimensions_to_variant($product_id, $variant_id, $brand_id_info)
-	{	
-		return	$this->db->insert('products_variants_brand', array('product_id'=>$product_id, 'product_variant_id'=>$variant_id, 'brand_id'=>$brand_id_info));
-	}
-	function add_vendor_product_item($product_id, $vendor_id, $product_item_id,$item_price,$image_name){
-		try{
-			$this->db->insert('vendors_product', array('product_id'=>$product_id, 'vendor_id'=>$vendor_id, 'product_variant_brand_id'=>$product_item_id,'price'=>$item_price,'image'=>$image_name));
-			return true;	
-		}catch(Exception $e){
-			return "Problem in inserting data";
-		}
-	}
+
 	function search_products($term, $limit=false, $offset=false, $by=false, $sort=false)
 	{
 		$results		= array();
@@ -446,39 +385,5 @@ Class Product_model extends CI_Model
 		$product->file_list	= $this->Digital_Product_model->get_associations_by_product($id);
 		
 		return (array)$product;
-	}
-	function get_all_brands(){
-		$results		= array();
-		$result=$this->db->select('brands.*')->from('brands')->where('active',1)->get()->result();
-		return $result;
-	}
-	function get_all_product_dimensions(){
-		$results		= array();
-		$result=$this->db->select('product_dimension.*')->from('product_dimension')->where('active',1)->get()->result();
-		return $result;
-	}
-	function get_product_brands($id){
-		$results		= array();
-		$result=$this->db->select('products_variants_brand.*')->from('products_variants_brand')->where('product_id',$id)->get()->result();
-		return $result;
-	}
-	function get_all_product_vendors(){
-		$results		= array();
-		$result=$this->db->select('gc_vendors.*')->from('gc_vendors')->where('active','1')->get()->result();
-		return $result;	
-	}
-	function get_all_product_items($id){
-		$results = array();
-		$result=$this->db->select('gc_products_variants_brand.*,gc_product_dimension.name as dimension_name,gc_product_variants.dimension_value,gc_brands.brand_name as brand_name,gc_products.name as product_name ')->from('gc_products_variants_brand')->
-		join('gc_product_variants', 'gc_products_variants_brand.product_variant_id=gc_product_variants.id')->
-		join('gc_product_dimension', 'gc_product_variants.product_dimension_id=gc_product_dimension.id')->
-		join('gc_brands', 'gc_products_variants_brand.brand_id=gc_brands.id')->
-		join('gc_products', 'gc_products_variants_brand.product_id=gc_products.id')->
-		where(array('gc_products_variants_brand.active'=>'1','gc_products_variants_brand.product_id'=>$id))->get()->result();
-		return $result;	
-	}
-	function get_all_vendors(){
-		$result=$this->db->select('gc_vendors.*')->from('gc_vendors')->where(array('active'=>'1'))->get()->result();
-		return $result;	
 	}
 }

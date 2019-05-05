@@ -103,3 +103,10 @@ DEBUG - 2018-11-12 18:20:30 --> File loaded: gocart/views/admin/products.php
 DEBUG - 2018-11-12 18:20:30 --> File loaded: gocart/views/admin/footer.php
 DEBUG - 2018-11-12 18:20:30 --> Final output sent to browser
 DEBUG - 2018-11-12 18:20:30 --> Total execution time: 0.1535
+DEBUG - 2018-11-12 18:33:07 --> Config Class Initialized
+DEBUG - 2018-11-12 18:33:07 --> Hooks Class Initialized
+DEBUG - 2018-11-12 18:33:07 --> Utf8 Class Initialized
+DEBUG - 2018-11-12 18:33:07 --> UTF-8 Support Enabled
+DEBUG - 2018-11-12 18:33:07 --> URI Class Initialized
+DEBUG - 2018-11-12 18:33:07 --> Router Class Initialized
+ERROR - 2018-11-12 18:33:07 --> 404 Page Not Found --> admin/dashboard

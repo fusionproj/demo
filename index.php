@@ -1,5 +1,6 @@
 <?php
 session_start();
+error_reporting(E_ALL ^ E_NOTICE);
 //set the session userdata if non-existant
 if(!isset($_SESSION['userdata']))
 {

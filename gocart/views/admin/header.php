@@ -85,11 +85,26 @@ $(document).ready(function(){
             
             <?php $admin_url = site_url($this->config->item('admin_folder')).'/';?>
             
-            <a class="brand" href="<?php echo $admin_url;?>products/">GoCart</a>
+            <a class="brand" href="<?php echo $admin_url;?>">GoCart</a>
             
             <div class="nav-collapse">
                 <ul class="nav">
-                    
+                    <li><a href="<?php echo $admin_url;?>"><?php echo lang('common_home');?></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo lang('common_sales') ?> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?php echo $admin_url;?>orders"><?php echo lang('common_orders') ?></a></li>
+                            <?php if($this->auth->check_access('Admin')) : ?>
+                            <li><a href="<?php echo $admin_url;?>customers"><?php echo lang('common_customers') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>customers/groups"><?php echo lang('common_groups') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>reports"><?php echo lang('common_reports') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>coupons"><?php echo lang('common_coupons') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>giftcards"><?php echo lang('common_giftcards') ?></a></li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+
+
 
                     <?php
                     // Restrict access to Admins only
@@ -97,17 +112,39 @@ $(document).ready(function(){
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo lang('common_catalog') ?> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo $admin_url;?>products/index"><?php echo lang('common_products') ?></a></li>
-                            
+                            <li><a href="<?php echo $admin_url;?>categories"><?php echo lang('common_categories') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>products"><?php echo lang('common_products') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>digital_products"><?php echo lang('common_digital_products') ?></a></li>
                         </ul>
                     </li>
                     
-                                        <?php endif; ?>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo lang('common_content') ?> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?php echo $admin_url;?>banners"><?php echo lang('common_banners') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>pages"><?php echo lang('common_pages') ?></a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo lang('common_administrative') ?> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?php echo $admin_url;?>settings"><?php echo lang('common_gocart_configuration') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>shipping"><?php echo lang('common_shipping_modules') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>payment"><?php echo lang('common_payment_modules') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>settings/canned_messages"><?php echo lang('common_canned_messages') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>locations"><?php echo lang('common_locations') ?></a></li>
+                            <li><a href="<?php echo $admin_url;?>admin"><?php echo lang('common_administrators') ?></a></li>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
                 </ul>
                 <ul class="nav pull-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo lang('common_actions');?> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
+                            <li><a href="<?php echo site_url($this->config->item('admin_folder').'/dashboard');?>"><?php echo lang('common_dashboard') ?></a></li>
+                            <li><a href="<?php echo site_url();?>"><?php echo lang('common_front_end') ?></a></li>
                             <li><a href="<?php echo site_url($this->config->item('admin_folder').'/login/logout');?>"><?php echo lang('common_log_out') ?></a></li>
                         </ul>
                     </li>
